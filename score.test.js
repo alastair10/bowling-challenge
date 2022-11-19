@@ -5,21 +5,23 @@ describe ('runBonus', () => {
     let score = new Score();
     score.runRoll(3,4);
     score.getFrameScore();
-    score.runBonus();
-    expect(score.scoreList.get('b1')).toEqual(0);
-    expect(score.scoreList.get('b2')).toEqual(0);
+    score.currentBonus();
+    expect(score.bonusList.get(1)).toEqual(0);
+    expect(score.bonusList.get(2)).toEqual(0);
   });
 
   it ('assigns two bonuses for a spare from previous round', () => {
     let score = new Score();
     score.runRoll(5,5); //spare
     score.getFrameScore();
-    score.runBonus();
     score.runRoll(2,1);
     score.getFrameScore();
-    score.runBonus();
-    expect(score.scoreList.get('b1')).toEqual(2);
-    expect(score.scoreList.get('b2')).toEqual(0);
+    score.currentBonus();
+    score.priorSpareBonus();
+    score.priorSingleStrikeBonus();
+    score.priorDoubleStrikesBonus();
+    expect(score.bonusList.get(1)).toEqual(2);
+    expect(score.bonusList.get(2)).toEqual(0);
   });
 });
 
@@ -27,16 +29,26 @@ describe ('runRoll', () => {
   it ('adds user scores to the scoreList map', () => {
     let score = new Score();
     score.runRoll(9,1);
-    expect(score.scoreList.get('r1')).toEqual(9);
-    expect(score.scoreList.get('r2')).toEqual(1);
+    expect(score.scoreList.get(1)).toEqual(9);
+    expect(score.scoreList.get(2)).toEqual(1);
   });
 
   it ('adds user scores to the scoreList map after 2 rounds', () => {
     let score = new Score();
-    score.runRoll(1,2);
-    score.runRoll(3,4);
-    expect(score.scoreList.get('r3')).toEqual(3);
-    expect(score.scoreList.get('r4')).toEqual(4);
+    score.runRoll(1,4);
+    score.getFrameScore();
+    score.currentBonus();
+    score.priorSpareBonus();
+    score.priorSingleStrikeBonus();
+    score.priorDoubleStrikesBonus();
+    score.runRoll(4,5);
+    score.getFrameScore();
+    score.currentBonus();
+    score.priorSpareBonus();
+    score.priorSingleStrikeBonus();
+    score.priorDoubleStrikesBonus();
+    expect(score.scoreList.get(3)).toEqual(4);
+    expect(score.scoreList.get(4)).toEqual(5);
   });
 });
 

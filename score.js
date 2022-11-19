@@ -9,6 +9,7 @@ class Score {
     this.currentRoll = 0;
     this.bonusList = new Map();
     this.scoreList = new Map();
+    this.counter = 0;
   }
 
   // sets up the roll scores)
@@ -71,11 +72,12 @@ class Score {
     };
   };
 
-  // printFrameScore () {
-  //   let i = 0
-  //   let frameList = new Map();
-    
-  // }
+  // prints total frame scores = scores + bonus
+  printFrameScore (n) {
+    let scoreTotal = this.scoreList.get(n*2) + this.scoreList.get(n*2-1);
+    let bonusTotal = this.bonusList.get(n*2) + this.bonusList.get(n*2-1);
+    return scoreTotal + bonusTotal;
+  };
 
 
 }
