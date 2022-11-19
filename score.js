@@ -5,7 +5,7 @@ class Score {
     this.r2 = 0;
     this.b1 = 0;
     this.b2 = 0;
-    this.framescore = 0;
+    this.frameScore = 0;
     this.currentRoll = 0;
     this.bonusList = new Map();
     this.scoreList = new Map();
@@ -22,26 +22,26 @@ class Score {
 
   // determines the frame score
   getFrameScore() {
-    this.framescore = this.r1 + this.r2;
-    return this.framescore;
+    this.frameScore = this.r1 + this.r2;
+    return this.frameScore;
   }
 
-  // assigns bonus scores
+  // assigns bonus scores of zero if frame < 10
   currentBonus () {
     // this frame < 10, set bonuses to 0
-    if (this.framescore < 10) {
+    if (this.frameScore < 10) {
       this.bonusList.set(this.currentRoll-1,0)
         .set(this.currentRoll,0);
     }
   };
-
+  // checks if bonus for spare on round n-1 is due
   priorSpareBonus () {
     if ((this.scoreList.get(this.currentRoll-3) + (this.scoreList.get(this.currentRoll-2))) === 10) {
       this.bonusList.set(this.currentRoll-3, this.r1)
         .set(this.currentRoll-2,0);
     }
   };
-
+  // checks if bonus for strike on round n-1 is due
   priorSingleStrikeBonus () {
     if ((this.scoreList.get(this.currentRoll-3) === 10) && (this.r1 != 10)) {
       this.bonusList.set(this.currentRoll-3, this.r1);
@@ -49,12 +49,12 @@ class Score {
     }
   };
 
-  /// DOUBLE STRIKE ISNT WORKING
+  // checks for 2 strikes in a row. 
+  // bonuses due for frames n-1 and n-2 
   priorDoubleStrikesBonus () {
     if (this.currentRoll > 4) {
       if ((this.scoreList.get(this.currentRoll-5) === 10) && (this.scoreList.get(this.currentRoll-3) === 10)) {
-        this.bonusList.set(this.currentRoll-5, 10);
-        this.bonusList.set(this.currentRoll-5, 10);
+        this.bonusList.set(this.currentRoll-4, this.r1);
       };
     };
   };
@@ -63,7 +63,7 @@ class Score {
   strikeOrSpare() {
     if (this.r1 === 10) {
       return 'strike';
-    } else if (this.framescore === 10) {
+    } else if (this.frameScore === 10) {
       return 'spare';
     };
   };
