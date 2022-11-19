@@ -27,7 +27,7 @@ class Score {
   }
 
   // assigns bonus scores
-  runCurrentBonus () {
+  currentBonus () {
     // this frame < 10, set bonuses to 0
     if (this.framescore < 10) {
       this.bonusList.set(this.currentRoll-1,0)
@@ -35,22 +35,30 @@ class Score {
     }
   };
 
-  runPriorBonus () {
-    // previous frame = spare, add currentRoll 1 to previous frame bonus 1
+  priorSpareBonus () {
     if ((this.scoreList.get(this.currentRoll-3) + (this.scoreList.get(this.currentRoll-2))) === 10) {
       this.bonusList.set(this.currentRoll-3, this.r1)
         .set(this.currentRoll-2,0);
-    // prior two strikes in a row
-    } else if ((this.scoreList.get(this.currentRoll-5) === 10) && (this.scoreList.get(this.currentRoll-3) === 10)) {
-      this.bonusList.set(this.currentRoll-5, 10)
-        .set(this.currentRoll-4, 10);
-    // previous frame = strike and this frame != strike, add both rolls this frame to previous frame bonuses
-    } else if (this.scoreList.get(this.currentRoll-3) === 10) {
-      this.bonusList.set(this.currentRoll-3, this.r1)
-        .set(this.currentRoll-2, this.r2);
     }
   };
 
+  priorSingleStrikeBonus () {
+    if ((this.scoreList.get(this.currentRoll-3) === 10) && (this.r1 != 10)) {
+      this.bonusList.set(this.currentRoll-3, this.r1);
+      this.bonusList.set(this.currentRoll-2, this.r2);
+    }
+  };
+
+  /// DOUBLE STRIKE ISNT WORKING
+  priorDoubleStrikesBonus () {
+    if (this.currentRoll > 4) {
+      if ((this.scoreList.get(this.currentRoll-5) === 10) && (this.scoreList.get(this.currentRoll-3) === 10)) {
+        this.bonusList.set(this.currentRoll-5, 10);
+        this.bonusList.set(this.currentRoll-5, 10);
+      };
+    };
+  };
+    
   // determines whether a user has hit a strike or spare
   strikeOrSpare() {
     if (this.r1 === 10) {
