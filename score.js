@@ -9,7 +9,6 @@ class Score {
     this.currentRoll = 0;
     this.bonusList = new Map();
     this.scoreList = new Map();
-    this.counter = 0;
   }
 
   // sets up the roll scores)
@@ -55,7 +54,7 @@ class Score {
 
   // checks for 2 strikes in a row. 
   // bonuses due for frames n-1 and n-2 
-  priorDoubleStrikesBonus () {
+  priorDoubleStrikeBonus () {
     if (this.currentRoll > 4) {
       if ((this.scoreList.get(this.currentRoll-5) === 10) && (this.scoreList.get(this.currentRoll-3) === 10)) {
         this.bonusList.set(this.currentRoll-4, this.r1);
@@ -79,7 +78,21 @@ class Score {
     return scoreTotal + bonusTotal;
   };
 
+  // only called if strike or spare in 10th frame
+  tenthBonusOne (roll21) {
+    if ((this.scoreList.get(17) === 10) && (this.scoreList.get(19) === 10)) {
+      this.bonusList
+        .set(18, roll21)
+        .set(19, roll21);
+    };
+  };
 
-}
+  // only called if strike in 10th frame
+  // assigns last bonus
+  tenthBonusTwo (roll22) {
+    this.bonusList.set(22, roll22);
+  };
+
+};
 
 module.exports = Score;

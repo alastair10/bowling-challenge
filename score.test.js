@@ -1,6 +1,27 @@
 const Score = require('./score')
 
-describe ('runBonus', () => {
+describe ('tenth frame scoring', () => {
+  it ('assigns 0 bonus for non strike and non spare', () => {
+    let score = new Score();
+    score.runRoll(3,4);
+    score.getFrameScore();
+    score.currentBonus();
+    expect(score.bonusList.get(1)).toEqual(0);
+    expect(score.bonusList.get(2)).toEqual(0);
+  });
+
+  it ('assigns bonus for spare in 10th frame', () => {
+    let score = new Score();
+    score.runRoll(5,5);
+    score.getFrameScore();
+    score.currentBonus();
+    score.priorSpareBonus();
+  });
+});
+
+
+
+describe ('currentBonus', () => {
   it ('assigns 0 bonus for current frame', () => {
     let score = new Score();
     score.runRoll(3,4);
@@ -19,7 +40,7 @@ describe ('runBonus', () => {
     score.currentBonus();
     score.priorSpareBonus();
     score.priorSingleStrikeBonus();
-    score.priorDoubleStrikesBonus();
+    score.priorDoubleStrikeBonus();
     expect(score.bonusList.get(1)).toEqual(2);
     expect(score.bonusList.get(2)).toEqual(0);
   });
@@ -40,13 +61,13 @@ describe ('runRoll', () => {
     score.currentBonus();
     score.priorSpareBonus();
     score.priorSingleStrikeBonus();
-    score.priorDoubleStrikesBonus();
+    score.priorDoubleStrikeBonus();
     score.runRoll(4,5);
     score.getFrameScore();
     score.currentBonus();
     score.priorSpareBonus();
     score.priorSingleStrikeBonus();
-    score.priorDoubleStrikesBonus();
+    score.priorDoubleStrikeBonus();
     expect(score.scoreList.get(3)).toEqual(4);
     expect(score.scoreList.get(4)).toEqual(5);
   });
