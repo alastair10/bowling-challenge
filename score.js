@@ -30,22 +30,25 @@ class Score {
   currentBonus () {
     // this frame < 10, set bonuses to 0
     if (this.frameScore < 10) {
-      this.bonusList.set(this.currentRoll-1,0)
+      this.bonusList
+        .set(this.currentRoll-1,0)
         .set(this.currentRoll,0);
     }
   };
   // checks if bonus for spare on round n-1 is due
   priorSpareBonus () {
     if ((this.scoreList.get(this.currentRoll-3) + (this.scoreList.get(this.currentRoll-2))) === 10) {
-      this.bonusList.set(this.currentRoll-3, this.r1)
+      this.bonusList
+        .set(this.currentRoll-3, this.r1)
         .set(this.currentRoll-2,0);
     }
   };
   // checks if bonus for strike on round n-1 is due
   priorSingleStrikeBonus () {
     if ((this.scoreList.get(this.currentRoll-3) === 10) && (this.r1 != 10)) {
-      this.bonusList.set(this.currentRoll-3, this.r1);
-      this.bonusList.set(this.currentRoll-2, this.r2);
+      this.bonusList
+        .set(this.currentRoll-3, this.r1)
+        .set(this.currentRoll-2, this.r2);
     }
   };
 
@@ -68,7 +71,11 @@ class Score {
     };
   };
 
-  
+  // printFrameScore () {
+  //   let i = 0
+  //   let frameList = new Map();
+    
+  // }
 
 
 }
