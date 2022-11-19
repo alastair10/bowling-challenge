@@ -7,6 +7,7 @@ class Score {
     this.b2 = 0;
     this.framescore = 0;
     this.currentRoll = 0;
+    this.bonusList = new Map();
     this.scoreList = new Map();
   }
 
@@ -15,8 +16,8 @@ class Score {
     this.r1 = r1;
     this.r2 = r2;
     this.currentRoll += 2;
-    this.scoreList.set(`r${this.currentRoll-1}`,this.r1)
-      .set(`r${this.currentRoll}`,this.r2);
+    this.scoreList.set(this.currentRoll-1,this.r1)
+      .set(this.currentRoll,this.r2);
   }
 
   // determines the frame score
@@ -26,26 +27,27 @@ class Score {
   }
 
   // assigns bonus scores
-  runBonus () {
+  runCurrentBonus () {
     // this frame < 10, set bonuses to 0
     if (this.framescore < 10) {
-      this.scoreList.set(`b${this.currentRoll-1}`,0)
-        .set(`b${this.currentRoll}`,0);
+      this.bonusList.set(this.currentRoll-1,0)
+        .set(this.currentRoll,0);
+    }
+  };
 
+  runPriorBonus () {
     // previous frame = spare, add currentRoll 1 to previous frame bonus 1
-    } else if ((this.scoreList.get(`r${this.currentRoll-3}`) + (this.scoreList.get(`r${this.currentRoll-2}`))) === 10) {
-      this.scoreList.set(`b${this.currentRoll-3}`, this.r1)
-        .set(`b${this.currentRoll-2}`,0);
-
+    if ((this.scoreList.get(this.currentRoll-3) + (this.scoreList.get(this.currentRoll-2))) === 10) {
+      this.bonusList.set(this.currentRoll-3, this.r1)
+        .set(this.currentRoll-2,0);
     // prior two strikes in a row
-    } else if ((this.scoreList.get(`r${this.currentRoll-5}`) === 10) && (this.scoreList.get(`r${this.currentRoll-3}`) === 10)) {
-      this.scoreList.set(`b${this.currentRoll-5}`, 10)
-        .set(`b${this.currentRoll-4}`, 10);
-    
+    } else if ((this.scoreList.get(this.currentRoll-5) === 10) && (this.scoreList.get(this.currentRoll-3) === 10)) {
+      this.bonusList.set(this.currentRoll-5, 10)
+        .set(this.currentRoll-4, 10);
     // previous frame = strike and this frame != strike, add both rolls this frame to previous frame bonuses
-    } else if (this.scoreList.get(`r${this.currentRoll-3}`) === 10) {
-      this.scoreList.set(`b${this.currentRoll-3}`, this.r1)
-        .set(`b${this.currentRoll-2}`, this.r2);
+    } else if (this.scoreList.get(this.currentRoll-3) === 10) {
+      this.bonusList.set(this.currentRoll-3, this.r1)
+        .set(this.currentRoll-2, this.r2);
     }
   };
 
@@ -56,7 +58,9 @@ class Score {
     } else if (this.framescore === 10) {
       return 'spare';
     };
-  }
+  };
+
+  
 
 
 }
