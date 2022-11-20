@@ -19,7 +19,15 @@ class Score {
     this.scoreList.set(this.currentRoll-1,this.r1)
       .set(this.currentRoll,this.r2);
   }
-
+  // determines whether a user has hit a strike or spare
+  strikeOrSpare() {
+    if (this.r1 === 10) {
+      return 'strike';
+    } else if (this.frameScore === 10) {
+      return 'spare';
+    };
+  };
+  
   // determines the frame score
   getFrameScore() {
     this.frameScore = this.r1 + this.r2;
@@ -37,7 +45,7 @@ class Score {
   };
   // checks if bonus for spare on round n-1 is due
   priorSpareBonus () {
-    if ((this.scoreList.get(this.currentRoll-3) + (this.scoreList.get(this.currentRoll-2))) === 10) {
+    if (((this.scoreList.get(this.currentRoll-3) < 10) && ((this.scoreList.get(this.currentRoll-3) + (this.scoreList.get(this.currentRoll-2))) === 10))) {
       this.bonusList
         .set(this.currentRoll-3, this.r1)
         .set(this.currentRoll-2,0);
@@ -57,22 +65,16 @@ class Score {
   priorDoubleStrikeBonus () {
     if (this.currentRoll > 4) {
       if ((this.scoreList.get(this.currentRoll-5) === 10) && (this.scoreList.get(this.currentRoll-3) === 10)) {
-        this.bonusList.set(this.currentRoll-4, this.r1);
+        this.bonusList
+          .set(this.currentRoll-5, 10)
+          .set(this.currentRoll-4, this.r1);
+
       };
     };
   };
     
-  // determines whether a user has hit a strike or spare
-  strikeOrSpare() {
-    if (this.r1 === 10) {
-      return 'strike';
-    } else if (this.frameScore === 10) {
-      return 'spare';
-    };
-  };
-
   // prints total frame scores = scores + bonus
-  printFrameScore (n) {
+  printFrameScore(n) {
     let scoreTotal = this.scoreList.get(n*2) + this.scoreList.get(n*2-1);
     let bonusTotal = this.bonusList.get(n*2) + this.bonusList.get(n*2-1);
     return scoreTotal + bonusTotal;
@@ -84,15 +86,16 @@ class Score {
       this.bonusList
         .set(18, roll21)
         .set(19, roll21);
+    } else {
+      this.bonusList.set(19, roll21)
     };
   };
 
   // only called if strike in 10th frame
-  // assigns last bonus
+  // assigns final bonus
   tenthBonusTwo (roll22) {
-    this.bonusList.set(22, roll22);
+    this.bonusList.set(20, roll22);
   };
-
 };
 
 module.exports = Score;
