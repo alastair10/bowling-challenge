@@ -236,28 +236,26 @@ describe ('printFrameScore', () => {
 
 describe ('tenthBonusOne', () => {
   it ('adds a bonus for a spare in the 10th frame', () => {
-
+    let score = new Score();
+    score.tenthBonusOne(6);
+    expect(score.bonusList.get(19)).toEqual(6);
   });
 
   it ('adds a bonus for a strike in the 10th frame', () => {
-
-  });
-
-  it ('adds no bonus if normal (non strike, non spare) 10th frame', () => {
-
+    let score = new Score();
+    score.scoreList.set(17,10);
+    score.scoreList.set(19,10);
+    score.tenthBonusOne(3);
+    expect(score.bonusList.get(18)).toEqual(3);
+    expect(score.bonusList.get(19)).toEqual(3);
   });
 });
 
 describe ('tenthBonusTwo', () => {
   it ('adds a bonus for a strike in the 10th frame', () => {
-
-  });
-
-  it ('does not add a bonus if 10th frame is spare', () => {
-
-  });
-
-  it ('does not add a bonus if 10th frame is normal (non strike)', () => {
-
+    let score = new Score();
+    score.scoreList.set(19,10);
+    score.tenthBonusTwo(7)
+    expect(score.bonusList.get(20)).toEqual(7);
   });
 });
